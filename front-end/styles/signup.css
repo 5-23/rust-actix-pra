@@ -51,3 +51,5 @@ form > input:focus{
 #id{transform: translateX(-177px) translateY(-3px)}
 #name{transform: translateX(-164px) translateY(-3px)}
 #pw{transform: translateX(-150px) translateY(-3px)}
+
+/* #id::pattern */

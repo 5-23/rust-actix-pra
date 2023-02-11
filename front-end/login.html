@@ -9,14 +9,12 @@
 <body>
     
     <main>
-        <form action="make_user" method="post">
+        <form action="login-checker" method="post">
             <h1>로그인</h1>
             <span id="id">id</span>
-            <input type="text" name="id" required/>
-            <!-- <span id="name">name</span>
-            <input type="text" name="name" required/> -->
+            <input type="text" name="id" title="id를 입력하세요" pattern="^((?!\?).)*$" required/>
             <span id="pw">password</span>
-            <input type="password" name="pw" required/>
+            <input type="password" name="pw" title="password를 입력하세요" pattern="^((?!\?).)*$" required/>
             <input type="submit"/>
         </form>
     </main>

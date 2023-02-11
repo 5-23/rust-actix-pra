@@ -10,10 +10,6 @@ use serde::Deserialize;
 
 
 
-struct Counter{
-    i: Mutex<isize>
-}
-
 #[get("/")]
 async fn index() -> impl Responder{
     "hello"
@@ -75,6 +71,11 @@ async fn login() -> impl Responder{
         .body(a)
 }
 
+#[post("/login-checker")]
+async fn login_checker() -> impl Responder{
+    ""
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()>{
     HttpServer::new(||{
@@ -83,7 +84,6 @@ async fn main() -> std::io::Result<()>{
             //   .max_age(3600);
         App::new()
             .wrap(cors)
-            .app_data(Data::new(Counter{i: Mutex::new(0)}))
             .service(index)
             .service(make_user)
             .service(hello)
