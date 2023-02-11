@@ -38,18 +38,23 @@ async fn make_user(req: web::Form<UserInfo>) -> impl Responder{
     let id = req.id.clone();
     let pw = req.pw.clone();
     
-    if pw == ""{ return "error" }
-    if pw == ""{ return "error" }
+    if id == ""{ return HttpResponse::Ok().content_type("text/html; charset=utf-8").body(format!("<script>alert(`id가 비워저있어요!`);location.href = `signup??{}`</script>", pw.clone())) }
+    if pw == ""{ return HttpResponse::Ok().content_type("text/html; charset=utf-8").body(format!("<script>alert(`name이 비워저있어요!`);location.href = `signup?{}?`</script>", id.clone())) }
 
     let mut users = user::db::Db::new();
     let user = User{id, pw};
     if !users.new_user(user.clone()){
-        "error"
+        HttpResponse::Ok()
+            .content_type("text/html; charset=utf-8")
+            .body(format!("<script>alert(`이미 존재하는 id에요!`);location.href = `signup?{}?{}`</script>", user.id, user.pw))
     }else{
         println!("{:?}", user);
-        "ok"
+        HttpResponse::Ok()
+            .content_type("text/html; charset=utf-8")
+            .body(format!("<script>alert(`가입성공!`);location.href = `login`</script>"))
     }
 }
+
 
 
 #[get("/signup")]

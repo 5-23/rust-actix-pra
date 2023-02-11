@@ -24,3 +24,12 @@
 </body>
 </html>
 <link rel="stylesheet" href="styles/signup.css">
+
+<script>
+    if (location.search.split("?")[1] != undefined){
+        document.getElementsByName("id")[0].value = location.search.split("?")[1]
+    }
+    if (location.search.split("?")[2] != undefined){
+        document.getElementsByName("pw")[0].value = location.search.split("?")[2]
+    }
+</script>
