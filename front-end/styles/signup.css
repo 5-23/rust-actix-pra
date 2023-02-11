@@ -1,0 +1,53 @@
+@font-face {
+    font-family: toss;
+    src: url("/front-end/fonts/toss.ttf");
+}
+*{
+    margin: 0;
+    font-family: toss;
+}
+body{
+    display: grid;
+    justify-content: center;
+}
+h1{
+    font-weight: 900;
+}
+main{
+    margin-top: 100px;
+    background-color: rgb(112, 198, 255);
+    border-radius: 30px;
+    padding: 45px;
+}
+form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+}
+form > input{
+    margin-bottom: 40px;
+    width: 380px;
+    height: 40px;
+    border: 0;
+    cursor: text;
+    font-size: 20px;
+    border-radius: 40px;
+    padding-left: 20px;
+    background-color: #fff;
+}
+form > input[type=submit]{
+    cursor: pointer;
+    width: 400px;
+    height: 45px;
+    margin-top: 50px;
+    margin-bottom: 0;
+}
+
+form > input:focus{
+    outline: none;
+}
+
+#id{transform: translateX(-177px) translateY(-3px)}
+#name{transform: translateX(-164px) translateY(-3px)}
+#pw{transform: translateX(-150px) translateY(-3px)}
