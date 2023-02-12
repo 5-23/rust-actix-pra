@@ -1,8 +1,7 @@
 mod user;
 
-use actix_web::{web::{Data, Header}, get, post, HttpResponse, HttpServer, Responder, web, App, http::{self, header}, HttpRequest, FromRequest, Result};
-use core::time;
-use std::{sync::Mutex, fs, path::Path, thread};
+use actix_web::{get, post, HttpResponse, HttpServer, Responder, web, App, cookie::Cookie};
+use std::{fs, path::Path};
 use actix_cors::Cors;
 
 use user::user::User;
@@ -29,25 +28,25 @@ struct UserInfo{
     pw: String
 }
 
-#[post("/make_user")]
-async fn make_user(req: web::Form<UserInfo>) -> impl Responder{
-    let id = req.id.clone();
-    let pw = req.pw.clone();
+#[post("/signup")]
+async fn make_user(form: web::Form<UserInfo>) -> impl Responder{
+    let id = form.id.clone();
+    let pw = form.pw.clone();
     
-    if id == ""{ return HttpResponse::Ok().content_type("text/html; charset=utf-8").body(format!("<script>alert(`id가 비워저있어요!`);location.href = `signup??{}`</script>", pw.clone())) }
-    if pw == ""{ return HttpResponse::Ok().content_type("text/html; charset=utf-8").body(format!("<script>alert(`name이 비워저있어요!`);location.href = `signup?{}?`</script>", id.clone())) }
+    if id == ""{ return HttpResponse::Ok().content_type("text/html; charset=utf-8").body(format!("<title>가입</title> <script>alert(`id가 비워저있어요!`);location.href = `signup??{}`</script>", pw.clone())) }
+    if pw == ""{ return HttpResponse::Ok().content_type("text/html; charset=utf-8").body(format!("<title>가입</title> <script>alert(`name이 비워저있어요!`);location.href = `signup?{}?`</script>", id.clone())) }
 
     let mut users = user::db::Db::new();
     let user = User{id, pw};
     if !users.new_user(user.clone()){
         HttpResponse::Ok()
             .content_type("text/html; charset=utf-8")
-            .body(format!("<script>alert(`이미 존재하는 id에요!`);location.href = `signup?{}?{}`</script>", user.id, user.pw))
+            .body(format!("<title>가입</title><script>alert(`이미 존재하는 id에요!`);location.href = `signup?{}?{}`</script>", user.id, user.pw))
     }else{
         println!("{:?}", user);
         HttpResponse::Ok()
             .content_type("text/html; charset=utf-8")
-            .body(format!("<script>alert(`가입성공!`);location.href = `login`</script>"))
+            .body(format!("<title>가입</title><script>alert(`가입성공!`);location.href = `login`</script>"))
     }
 }
 
@@ -71,9 +70,25 @@ async fn login() -> impl Responder{
         .body(a)
 }
 
-#[post("/login-checker")]
-async fn login_checker() -> impl Responder{
-    ""
+#[post("/login")]
+async fn login_checker(form: web::Form<UserInfo>) -> impl Responder{
+    println!("request id: {:?}", form.id);
+    println!("request pw: {:?}", form.pw);
+
+    let mut res = String::new();
+
+    Cookie::new("asdf", "asdddf");
+    Cookie::build("asdf", "asdddf")
+        .domain("127.0.0.1:8080")
+        .secure(true)
+        .http_only(true)
+        .finish()
+        ;
+    res.push_str("<title>로그인</title>");
+
+    HttpResponse::Ok()
+        .content_type("text/html; charset=utf-8")
+        .body(res)
 }
 
 #[actix_web::main]
@@ -89,6 +104,7 @@ async fn main() -> std::io::Result<()>{
             .service(hello)
             .service(signup)
             .service(login)
+            .service(login_checker)
     })
     .bind(("127.0.0.1", 8080))?.run().await
 }
